@@ -1,0 +1,22 @@
+{
+	"compilerOptions": {
+		"sourceMap": true,
+		"outDir": "dist",
+		"target": "ES2018",
+		"types": ["@types/jest", "node"],
+		"module": "commonjs",
+		"strict": true,
+		"lib": ["esnext"],
+		"esModuleInterop": true,
+		/* Allow multiple folders to be treated as one when resolving modules. */
+		"typeRoots": ["./ts/global.d.ts", "*.d.ts"]
+	},
+	"exclude": ["dist"],
+	"ts-node": {
+		// https://github.com/TypeStrong/ts-node
+		"swc": true
+		// It is faster to skip typechecking.
+		// Remove if you want ts-node to do typechecking.
+		// "transpileOnly": true
+	}
+}
