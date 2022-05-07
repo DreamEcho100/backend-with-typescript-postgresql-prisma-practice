@@ -1,4 +1,9 @@
-export const genericTryCatch = async (callback: Function, options?: {}) => {
+export const genericTryCatch = async (
+	callback: Function,
+	options?: {
+		onError?: Function;
+	}
+) => {
 	try {
 		return await callback();
 	} catch (err) {
@@ -7,5 +12,7 @@ export const genericTryCatch = async (callback: Function, options?: {}) => {
 			: typeof err === 'object'
 			? console.dir(err)
 			: console.error(err);
+
+		if (options?.onError) return await options.onError(err);
 	}
 };
