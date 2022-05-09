@@ -7,12 +7,21 @@ export const genericTryCatch = async (
 	try {
 		return await callback();
 	} catch (err) {
-		err instanceof Error
-			? console.error(err.message)
-			: typeof err === 'object'
-			? console.dir(err)
-			: console.error(err);
-
 		if (options?.onError) return await options.onError(err);
 	}
+};
+
+export const printError = (
+	err: any,
+	options?: {
+		default?: string;
+	}
+) => {
+	err instanceof Error
+		? console.error(err.message)
+		: options?.default
+		? console.error(options?.default)
+		: typeof err === 'object'
+		? console.dir(err)
+		: console.error(err);
 };

@@ -34,7 +34,7 @@ describe('POST /users - create user', () => {
 		expect(typeof userId === 'number').toBeTruthy();
 	});
 
-	test('create user validation error', async () => {
+	test('Create user validation error', async () => {
 		const response = await server.inject({
 			method: 'POST',
 			url: '/users',
@@ -51,7 +51,7 @@ describe('POST /users - create user', () => {
 		expect(response.statusCode).toEqual(400);
 	});
 
-	test('get user returns 404 for non existant user', async () => {
+	test('Get user returns 404 for non existent user', async () => {
 		const response = await server.inject({
 			method: 'GET',
 			url: '/users/9999',
@@ -60,7 +60,7 @@ describe('POST /users - create user', () => {
 		expect(response.statusCode).toEqual(404);
 	});
 
-	test('get user returns user', async () => {
+	test('Get user returns user', async () => {
 		const response = await server.inject({
 			method: 'GET',
 			url: `/users/${userId}`,
@@ -69,5 +69,39 @@ describe('POST /users - create user', () => {
 		const user = JSON.parse(response.payload);
 
 		expect(user.id).toBe(userId);
+	});
+
+	test('update user', async () => {
+		const updatedFirstName = 'test-first-name-UPDATED';
+		const updatedLastName = 'test-last-name-UPDATED';
+
+		const response = await server.inject({
+			method: 'PUT',
+			url: `/users/${userId}`,
+			payload: {
+				firstName: updatedFirstName,
+				lastName: updatedLastName,
+			},
+		});
+		expect(response.statusCode).toEqual(200);
+		const user = JSON.parse(response.payload);
+		expect(user.firstName).toEqual(updatedFirstName);
+		expect(user.lastName).toEqual(updatedLastName);
+	});
+
+	test('Delete user fails with invalid userId parameter', async () => {
+		const response = await server.inject({
+			method: 'DELETE',
+			url: `/users/aa22`,
+		});
+		expect(response.statusCode).toEqual(400);
+	});
+
+	test('Delete user', async () => {
+		const response = await server.inject({
+			method: 'DELETE',
+			url: `/users/${userId}`,
+		});
+		expect(response.statusCode).toEqual(204);
 	});
 });
